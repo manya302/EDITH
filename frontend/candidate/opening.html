@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opening Details · HireSync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/opening.css">
+</head>
+<body>
+
+  <!-- ========== TOP NAVIGATION ========== -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="dashboard.html" class="nav-logo">
+        <span class="text-lg font-bold tracking-tight" data-sd-id="142">HireSync AI</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="application.html" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">Profile</a>
+        <a href="../login.html" class="nav-link nav-logout">Logout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="opening-page">
+
+    <!-- Back link -->
+    <a href="dashboard.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>Back to Dashboard</span>
+    </a>
+
+    <!-- ========== LOADING STATE ========== -->
+    <div class="state-card" id="loadingState">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="state-text">Loading opening…</p>
+    </div>
+
+    <!-- ========== ERROR STATE ========== -->
+    <div class="state-card" id="errorState" hidden>
+      <div class="state-icon state-icon-error" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Something went wrong</h2>
+      <p class="state-text" id="errorMessage">We couldn't load this opening. Please try again.</p>
+      <a href="dashboard.html" class="btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- ========== NOT FOUND STATE ========== -->
+    <div class="state-card" id="notFoundState" hidden>
+      <div class="state-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Opening not found</h2>
+      <p class="state-text">This opening may have been removed or the link is incorrect.</p>
+      <a href="dashboard.html" class="btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- ========== OPENING DETAILS ========== -->
+    <article class="opening-detail" id="openingDetail" hidden>
+
+      <!-- Header -->
+      <header class="detail-header">
+        <div class="detail-header-main">
+          <h1 class="detail-title" id="dTitle">—</h1>
+          <p class="detail-org" id="dOrganization">—</p>
+
+          <div class="detail-tags" id="detailTags">
+            <span class="tag tag-location" id="dLocation"></span>
+            <span class="tag" id="dJobType"></span>
+            <span class="tag" id="dWorkMode"></span>
+            <span class="tag" id="dExperience"></span>
+          </div>
+
+          <div class="detail-meta">
+            <div class="meta-item">
+              <span class="meta-label">Application Deadline</span>
+              <span class="meta-value" id="dDeadline">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Number of Positions</span>
+              <span class="meta-value" id="dPositions">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Apply action -->
+        <aside class="detail-apply">
+          <div class="apply-status" id="applyStatus" hidden></div>
+          <button type="button" class="btn-primary btn-apply" id="applyBtn">Apply Now</button>
+          <p class="apply-note" id="applyNote">Submit your application for this opening.</p>
+        </aside>
+      </header>
+
+      <!-- Description -->
+      <section class="detail-section" id="sectionDescription">
+        <h2 class="detail-section-title">About the Role</h2>
+        <p class="detail-description" id="dDescription">—</p>
+      </section>
+
+      <!-- Responsibilities -->
+      <section class="detail-section" id="sectionResponsibilities" hidden>
+        <h2 class="detail-section-title">Responsibilities</h2>
+        <ul class="detail-list" id="dResponsibilities"></ul>
+      </section>
+
+      <!-- Required Qualifications -->
+      <section class="detail-section" id="sectionRequired" hidden>
+        <h2 class="detail-section-title">Required Qualifications</h2>
+        <ul class="detail-list" id="dRequired"></ul>
+      </section>
+
+      <!-- Preferred Qualifications -->
+      <section class="detail-section" id="sectionPreferred" hidden>
+        <h2 class="detail-section-title">Preferred Qualifications</h2>
+        <ul class="detail-list" id="dPreferred"></ul>
+      </section>
+
+      <!-- Skills -->
+      <section class="detail-section" id="sectionSkills" hidden>
+        <h2 class="detail-section-title">Skills</h2>
+        <div class="skill-chips" id="dSkills"></div>
+      </section>
+
+      <!-- Benefits -->
+      <section class="detail-section" id="sectionBenefits" hidden>
+        <h2 class="detail-section-title">Benefits</h2>
+        <ul class="detail-list" id="dBenefits"></ul>
+      </section>
+
+    </article>
+
+  </main>
+
+  <!-- Supabase client must be initialized in a separate config file.
+       Replace this with your actual client module import. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/opening.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard · HireSync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+
+  <!-- ========== TOP NAVIGATION ========== -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="dashboard.html" class="nav-logo">
+        <span class="text-lg font-bold tracking-tight" data-sd-id="142">HireSync AI</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="dashboard.html" class="nav-link active" aria-current="page">Dashboard</a>
+        <a href="#" class="nav-link">Openings</a>
+        <a href="#" class="nav-link">Applications</a>
+        <a href="#" class="nav-link">Candidates</a>
+        <a href="../login.html" class="nav-link nav-logout">Logout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <!-- ========== WELCOME ========== -->
+    <section class="welcome">
+      <h1 class="welcome-title">Admin Dashboard</h1>
+      <p class="welcome-subtitle">Create and manage opportunities from a single workspace.</p>
+    </section>
+
+    <!-- ========== OVERVIEW STATS ========== -->
+    <section class="stats-grid" aria-label="Overview statistics">
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div class="stat-number" id="statActiveOpenings">12</div>
+        <div class="stat-label">Active Openings</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+        </div>
+        <div class="stat-number" id="statTotalApplications">148</div>
+        <div class="stat-label">Total Applications</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-number" id="statUnderReview">23</div>
+        <div class="stat-label">Under Review</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="stat-number" id="statShortlisted">9</div>
+        <div class="stat-label">Shortlisted</div>
+      </div>
+    </section>
+
+    <!-- ========== PRIMARY: CREATE OPENING FROM JD ========== -->
+    <section class="create-opening-section" aria-labelledby="createHeading">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title" id="createHeading">Create an Opening</h2>
+          <p class="section-subtitle">Upload a job description and we'll extract the details for you.</p>
+        </div>
+      </div>
+
+      <!-- ---------- STEP 1: UPLOAD ---------- -->
+      <div class="workflow-step" id="stepUpload">
+        <div class="upload-card" id="uploadCard" tabindex="0" role="button" aria-label="Upload job description PDF">
+          <div class="upload-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+          </div>
+          <h3 class="upload-heading">Upload Job Description</h3>
+          <p class="upload-text">Drag and drop your JD PDF here, or browse your files.</p>
+          <button type="button" class="btn-secondary" id="choosePdfBtn">Choose PDF</button>
+          <p class="upload-meta">PDF only · Max 10 MB</p>
+          <input type="file" id="pdfInput" accept="application/pdf,.pdf" hidden>
+        </div>
+
+        <!-- File preview (hidden until a file is chosen) -->
+        <div class="file-preview" id="filePreview" hidden>
+          <div class="file-preview-info">
+            <div class="file-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+            </div>
+            <div class="file-details">
+              <div class="file-name" id="fileName">software-engineer-jd.pdf</div>
+              <div class="file-meta" id="fileMeta">PDF · 1.2 MB</div>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button type="button" class="link-btn" id="replaceFileBtn">Replace</button>
+            <button type="button" class="link-btn link-danger" id="removeFileBtn">Remove</button>
+          </div>
+        </div>
+
+        <!-- Extract action -->
+        <div class="step-actions" id="extractActions" hidden>
+          <button type="button" class="btn-primary" id="extractBtn">Extract Job Details</button>
+        </div>
+      </div>
+
+      <!-- ---------- STEP 2: PROCESSING ---------- -->
+      <div class="workflow-step" id="stepProcessing" hidden>
+        <div class="processing-card">
+          <div class="spinner" aria-hidden="true"></div>
+          <h3 class="processing-title">Analyzing Job Description</h3>
+          <p class="processing-text">Extracting role, requirements, responsibilities, and application details...</p>
+          <div class="processing-flow" aria-hidden="true">
+            <span class="flow-node">PDF</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node">Supabase</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node">JD Processing</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node">Structured JSON</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- STEP 3: REVIEW FORM ---------- -->
+      <div class="workflow-step" id="stepReview" hidden>
+        <div class="review-header">
+          <h3 class="review-title">Review Opening Details</h3>
+          <p class="review-subtitle">We've extracted these details from your job description. Review and edit them before publishing.</p>
+        </div>
+
+        <!-- Review notice -->
+        <div class="review-notice" role="note">
+          <div class="notice-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div>
+            <strong class="notice-title">Review extracted information before publishing</strong>
+            <p class="notice-text">The details below were generated from the uploaded job description. Please verify important information such as deadlines, qualifications, and responsibilities.</p>
+          </div>
+        </div>
+
+        <form id="openingForm" novalidate>
+
+          <!-- Basic Information -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Basic Information</legend>
+            <div class="form-grid">
+              <div class="input-group span-2">
+                <label for="fTitle">Job Title <span class="required">*</span></label>
+                <input type="text" id="fTitle" name="title" required>
+              </div>
+              <div class="input-group">
+                <label for="fOrganization">Organization <span class="required">*</span></label>
+                <input type="text" id="fOrganization" name="organization" required>
+              </div>
+              <div class="input-group">
+                <label for="fDepartment">Department</label>
+                <input type="text" id="fDepartment" name="department">
+              </div>
+              <div class="input-group">
+                <label for="fLocation">Location <span class="required">*</span></label>
+                <input type="text" id="fLocation" name="location" required>
+              </div>
+              <div class="input-group">
+                <label for="fJobType">Job Type <span class="required">*</span></label>
+                <select id="fJobType" name="jobType" required>
+                  <option value="">Select…</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="fWorkMode">Work Mode</label>
+                <select id="fWorkMode" name="workMode">
+                  <option value="">Select…</option>
+                  <option value="On-site">On-site</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Remote">Remote</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="fExperience">Experience Level</label>
+                <select id="fExperience" name="experience">
+                  <option value="">Select…</option>
+                  <option value="Entry Level">Entry Level</option>
+                  <option value="1-2 Years">1–2 Years</option>
+                  <option value="2-5 Years">2–5 Years</option>
+                  <option value="5+ Years">5+ Years</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- About the Role -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">About the Role</legend>
+            <div class="input-group">
+              <label for="fDescription">Job Description / Overview <span class="required">*</span></label>
+              <textarea id="fDescription" name="description" rows="5" required></textarea>
+            </div>
+          </fieldset>
+
+          <!-- Responsibilities -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Responsibilities</legend>
+            <div class="list-editor" data-list="responsibilities" id="listResponsibilities"></div>
+            <button type="button" class="link-btn add-item-btn" data-add="responsibilities">+ Add responsibility</button>
+          </fieldset>
+
+          <!-- Required Qualifications -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Required Qualifications</legend>
+            <div class="list-editor" data-list="requiredQualifications" id="listRequired"></div>
+            <button type="button" class="link-btn add-item-btn" data-add="requiredQualifications">+ Add required qualification</button>
+          </fieldset>
+
+          <!-- Preferred Qualifications -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Preferred Qualifications</legend>
+            <div class="list-editor" data-list="preferredQualifications" id="listPreferred"></div>
+            <button type="button" class="link-btn add-item-btn" data-add="preferredQualifications">+ Add preferred qualification</button>
+          </fieldset>
+
+          <!-- Skills -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Skills</legend>
+            <div class="tag-editor" id="skillsEditor"></div>
+            <div class="tag-add-row">
+              <input type="text" id="skillInput" placeholder="Add a skill…" aria-label="Add a skill">
+              <button type="button" class="link-btn" id="addSkillBtn">Add</button>
+            </div>
+          </fieldset>
+
+          <!-- Benefits -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Benefits</legend>
+            <div class="list-editor" data-list="benefits" id="listBenefits"></div>
+            <button type="button" class="link-btn add-item-btn" data-add="benefits">+ Add benefit</button>
+          </fieldset>
+
+          <!-- Application Details -->
+          <fieldset class="form-section">
+            <legend class="form-section-title">Application Details</legend>
+            <div class="form-grid">
+              <div class="input-group">
+                <label for="fDeadline">Application Deadline <span class="required">*</span></label>
+                <input type="date" id="fDeadline" name="applicationDeadline" required>
+              </div>
+              <div class="input-group">
+                <label for="fPositions">Number of Positions</label>
+                <input type="number" id="fPositions" name="positions" min="1" value="1">
+              </div>
+              <div class="input-group">
+                <label for="fStatus">Opening Status</label>
+                <select id="fStatus" name="status">
+                  <option value="draft">Draft</option>
+                  <option value="active" selected>Active</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Form actions -->
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="saveDraftBtn">Save as Draft</button>
+            <button type="submit" class="btn-primary" id="publishBtn">Publish Opening</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ---------- STEP 4: SUCCESS ---------- -->
+      <div class="workflow-step" id="stepSuccess" hidden>
+        <div class="success-card">
+          <div class="success-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h3 class="success-title">Opening Published Successfully</h3>
+          <p class="success-text">Your opening is now available to candidates.</p>
+          <div class="success-actions">
+            <a href="#" class="btn-primary" id="viewOpeningBtn">View Candidates</a>
+            <a href="#" class="btn-secondary" id="previewOpeningBtn" target="_blank" rel="noopener">Preview as Candidate</a>
+            <button type="button" class="btn-secondary" id="backToDashboardBtn">Back to Dashboard</button>
+            </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========== PUBLISHED OPENINGS ========== -->
+    <section class="openings-section" aria-labelledby="publishedHeading">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title" id="publishedHeading">Published Openings</h2>
+          <p class="section-subtitle">Opportunities currently stored in your workspace.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table" id="publishedTable">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Organization</th>
+              <th>Location</th>
+              <th>Job Type</th>
+              <th>Applications</th>
+              <th>Deadline</th>
+              <th>Status</th>
+              <th class="align-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="publishedTbody">
+            <!-- Rows injected by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== RECENT APPLICATIONS ========== -->
+    <section class="applications-section" aria-labelledby="recentAppsHeading">
+      <div class="section-header">
+        <h2 class="section-title" id="recentAppsHeading">Recent Applications</h2>
+      </div>
+
+      <div class="applications-list" id="recentAppsList">
+        <!-- Items injected by JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast container for error/success messages -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>

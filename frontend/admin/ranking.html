@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Ranking · HireSync
+  </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/ranking.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       TOP NAVIGATION
+       ============================================================ -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="dashboard.html" class="nav-logo">
+        <span class="text-lg font-bold tracking-tight" data-sd-id="142">HireSync AI</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="openings.html" class="nav-link">Openings</a>
+        <a href="ranking.html" class="nav-link active" aria-current="page">Candidates</a>
+        <a href="applications.html" class="nav-link">Applications</a>
+        <a href="../login.html" class="nav-link nav-logout">Logout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page" id="pageRoot">
+
+    <!-- Back link -->
+    <a href="dashboard.html" class="back-link" id="backToOpeningsLink">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>Back to Dashboard</span>
+    </a>
+
+    <!-- ============================================================
+         STATE: Missing opening_id / Not found / Error / Loading
+         ============================================================ -->
+    <div class="state-card" id="stateLoading">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="state-text">Loading opening…</p>
+    </div>
+
+    <div class="state-card" id="stateMissingId" hidden>
+      <div class="state-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Opening not specified</h2>
+      <p class="state-text">This page requires an opening ID. Please choose an opening first.</p>
+      <a href="dashboard.html" class="btn-primary">Back to Dashboard</a>
+    </div>
+
+    <div class="state-card" id="stateNotFound" hidden>
+      <div class="state-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Opening not found</h2>
+      <p class="state-text">This opening may have been removed or the link is incorrect.</p>
+      <a href="openings.html" class="btn-primary">Back to Openings</a>
+    </div>
+
+    <div class="state-card" id="stateError" hidden>
+      <div class="state-icon state-icon-error" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h2 class="state-title" id="errorTitle">Something went wrong</h2>
+      <p class="state-text" id="errorText">We couldn't load this page. Please try again.</p>
+      <a href="openings.html" class="btn-primary">Back to Openings</a>
+    </div>
+
+    <!-- ============================================================
+         MAIN CONTENT (opening + split layout)
+         ============================================================ -->
+    <div id="mainContent" hidden>
+
+      <!-- Opening context -->
+      <section class="opening-context" aria-labelledby="openingTitle">
+        <p class="page-eyebrow">Candidate Ranking</p>
+        <h1 class="page-title" id="openingTitle">—</h1>
+        <p class="opening-meta" id="openingMeta">—</p>
+        <div class="opening-stats">
+          <div class="opening-stat">
+            <span class="opening-stat-label">Applicants</span>
+            <span class="opening-stat-value" id="openingApplicantCount">—</span>
+          </div>
+          <div class="opening-stat">
+            <span class="opening-stat-label">Positions</span>
+            <span class="opening-stat-value" id="openingPositions">—</span>
+          </div>
+          <div class="opening-stat">
+            <span class="opening-stat-label">Deadline</span>
+            <span class="opening-stat-value" id="openingDeadline">—</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Split layout -->
+      <div class="split-layout">
+
+        <!-- LEFT: candidate list -->
+        <section class="list-pane" aria-label="Candidate list">
+
+          <!-- Controls -->
+          <div class="controls">
+            <div class="search-wrapper">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="searchInput" class="search-input" placeholder="Search candidates..." aria-label="Search candidates by name, email, or skills">
+            </div>
+
+            <div class="control-row">
+              <label class="control-label" for="sortSelect">Sort</label>
+              <select id="sortSelect" class="control-select">
+                <option value="rank">Rank</option>
+                <option value="match_score">Match Score</option>
+                <option value="applied_date">Application Date</option>
+              </select>
+            </div>
+
+            <div class="filter-chips" role="group" aria-label="Filter by application status">
+              <button type="button" class="chip active" data-filter="all">All</button>
+              <button type="button" class="chip" data-filter="submitted">Submitted</button>
+              <button type="button" class="chip" data-filter="review">Under Review</button>
+              <button type="button" class="chip" data-filter="shortlisted">Shortlisted</button>
+              <button type="button" class="chip" data-filter="rejected">Rejected</button>
+            </div>
+          </div>
+
+          <!-- Candidate rows container -->
+          <div class="candidate-list" id="candidateList" role="listbox" aria-label="Candidates" aria-live="polite">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Empty / unavailable states -->
+          <div class="inline-state" id="stateRankingUnavailable" hidden>
+            <div class="inline-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="inline-title">Ranking data unavailable</h3>
+            <p class="inline-text">Candidate ranking is not available yet. The ranking service has not been connected.</p>
+          </div>
+
+          <div class="inline-state" id="stateNoApplicants" hidden>
+            <div class="inline-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="inline-title">No applications yet</h3>
+            <p class="inline-text">There are currently no candidates for this opening.</p>
+          </div>
+
+          <div class="inline-state" id="stateNoMatch" hidden>
+            <div class="inline-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 class="inline-title">No candidates match your search</h3>
+            <p class="inline-text">Try adjusting your search or filters.</p>
+            <button type="button" class="btn-secondary" id="clearFiltersBtn">Clear Filters</button>
+          </div>
+
+        </section>
+
+        <!-- RIGHT: details panel -->
+        <aside class="detail-pane" id="detailPane" aria-label="Candidate details" aria-hidden="true">
+          <button type="button" class="detail-close" id="detailCloseBtn" aria-label="Close candidate details">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+
+          <!-- Details loading -->
+          <div class="detail-loading" id="detailLoading" hidden>
+            <div class="spinner"></div>
+            <p class="state-text">Loading candidate…</p>
+          </div>
+
+          <!-- Details empty (nothing selected) -->
+          <div class="detail-empty" id="detailEmpty">
+            <div class="inline-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="inline-title">Select a candidate</h3>
+            <p class="inline-text">Click a candidate from the list to view their full profile.</p>
+          </div>
+
+          <!-- Details content -->
+          <div class="detail-content" id="detailContent" hidden>
+
+            <!-- A. Header -->
+            <header class="detail-header">
+              <h2 class="detail-name" id="detailName">—</h2>
+              <div class="detail-contact" id="detailContact"></div>
+              <div class="detail-badges">
+                <span class="badge badge-rank" id="detailRank">—</span>
+                <span class="badge badge-score" id="detailScore">—</span>
+                <span class="badge badge-status" id="detailStatusBadge">—</span>
+              </div>
+            </header>
+
+            <!-- B. Why this candidate -->
+            <section class="detail-block">
+              <h3 class="detail-block-title">Why this candidate is ranked here</h3>
+
+              <div class="match-grid" id="matchGrid"></div>
+
+              <div class="reason-columns" id="reasonColumns">
+                <div class="reason-col" id="strengthsCol" hidden>
+                  <h4 class="reason-title">Strengths</h4>
+                  <ul class="reason-list reason-list-good" id="strengthsList"></ul>
+                </div>
+                <div class="reason-col" id="gapsCol" hidden>
+                  <h4 class="reason-title">Gaps</h4>
+                  <ul class="reason-list reason-list-gap" id="gapsList"></ul>
+                </div>
+              </div>
+
+              <p class="muted-note" id="reasonUnavailable" hidden>Ranking explanation is not available.</p>
+            </section>
+
+            <!-- C. Skills -->
+            <section class="detail-block" id="skillsBlock" hidden>
+              <h3 class="detail-block-title">Skills</h3>
+              <div class="skill-chips" id="detailSkills"></div>
+            </section>
+
+            <!-- D. Education -->
+            <section class="detail-block" id="educationBlock" hidden>
+              <h3 class="detail-block-title">Education</h3>
+              <dl class="detail-dl" id="educationList"></dl>
+            </section>
+
+            <!-- E. Experience -->
+            <section class="detail-block" id="experienceBlock" hidden>
+              <h3 class="detail-block-title">Experience</h3>
+              <dl class="detail-dl" id="experienceList"></dl>
+            </section>
+
+            <!-- F. Links -->
+            <section class="detail-block" id="linksBlock" hidden>
+              <h3 class="detail-block-title">Links</h3>
+              <div class="links-row" id="detailLinks"></div>
+            </section>
+
+            <!-- G. Application info -->
+            <section class="detail-block">
+              <h3 class="detail-block-title">Application Information</h3>
+              <dl class="detail-dl" id="appInfoList"></dl>
+            </section>
+
+            <!-- Resume -->
+            <section class="detail-block">
+              <h3 class="detail-block-title">Resume</h3>
+              <div id="resumeRow">
+                <p class="muted-note" id="resumeUnavailable" hidden>Resume not available</p>
+                <button type="button" class="btn-secondary btn-resume" id="viewResumeBtn" hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  <span>View Resume (PDF · opens in new tab)</span>
+                </button>
+              </div>
+            </section>
+
+            <!-- Status update -->
+            <section class="detail-block">
+              <h3 class="detail-block-title">Update Status</h3>
+              <div class="status-update-row">
+                <select id="statusSelect" class="control-select" aria-label="Application status">
+                  <option value="">Select…</option>
+                </select>
+                <button type="button" class="btn-primary" id="updateStatusBtn" disabled>Update</button>
+              </div>
+              <p class="muted-note" id="statusUpdateNote" hidden></p>
+            </section>
+
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Mobile backdrop for the detail drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Supabase UMD + project client config + page script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/ranking.js"></script>
+</body>
+</html>
