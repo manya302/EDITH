@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Dashboard · Opportunities</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/candidate-dashboard.css">
+</head>
+<body>
+
+  <!-- ========== TOP NAVIGATION ========== -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <a href="dashboard.html" class="nav-logo">
+        <span class="text-lg font-bold tracking-tight" data-sd-id="142">HireSync AI</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="dashboard.html" class="nav-link active" aria-current="page">Dashboard</a>
+        <a href="application.html" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">Profile</a>
+        <a href="../login.html" class="nav-link nav-logout">Logout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <!-- ========== WELCOME ========== -->
+    <section class="welcome">
+      <h1 class="welcome-title">Welcome back, Candidate</h1>
+      <p class="welcome-subtitle">Explore opportunities that match your skills and take the next step in your career.</p>
+    </section>
+
+    <!-- ========== QUICK STATS ========== -->
+    <section class="stats-grid" aria-label="Quick statistics">
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div class="stat-number" id="statAvailable">24</div>
+        <div class="stat-label">Available Opportunities</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+        </div>
+        <div class="stat-number" id="statSubmitted">7</div>
+        <div class="stat-label">Applications Submitted</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-number" id="statInProgress">3</div>
+        <div class="stat-label">Applications In Progress</div>
+      </div>
+    </section>
+
+    <!-- ========== AVAILABLE OPENINGS ========== -->
+    <section class="openings-section" aria-labelledby="openingsHeading">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title" id="openingsHeading">Available Opportunities</h2>
+          <p class="section-subtitle">Find an opening that matches your interests and skills.</p>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="search-filter-bar">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search opportunities..." aria-label="Search opportunities">
+        </div>
+
+        <div class="filters">
+          <select id="filterLocation" class="filter-select" aria-label="Filter by location">
+            <option value="">All Locations</option>
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Remote">Remote</option>
+          </select>
+
+          <select id="filterJobType" class="filter-select" aria-label="Filter by job type">
+            <option value="">All Job Types</option>
+            <option value="Internship">Internship</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+          </select>
+
+          <select id="filterDepartment" class="filter-select" aria-label="Filter by department">
+            <option value="">All Departments</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Data">Data</option>
+          </select>
+
+          <select id="filterExperience" class="filter-select" aria-label="Filter by experience level">
+            <option value="">All Experience</option>
+            <option value="Entry Level">Entry Level</option>
+            <option value="1-2 Years">1–2 Years</option>
+            <option value="2-5 Years">2–5 Years</option>
+            <option value="5+ Years">5+ Years</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Opening Cards Grid -->
+      <div class="openings-grid" id="openingsGrid">
+        <!-- Cards injected by JavaScript -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h3 class="empty-title">No opportunities found</h3>
+        <p class="empty-text">Try adjusting your search or filters to find more openings.</p>
+        <button class="btn-clear" id="clearFiltersBtn">Clear Filters</button>
+      </div>
+    </section>
+
+    <!-- ========== RECENT APPLICATIONS ========== -->
+    <section class="applications-section" aria-labelledby="appsHeading">
+      <div class="section-header">
+        <h2 class="section-title" id="appsHeading">Recent Applications</h2>
+        <a href="application.html" class="view-all-link">View All Applications →</a>
+      </div>
+
+      <div class="applications-list">
+        <div class="app-item">
+          <div class="app-info">
+            <div class="app-title">Software Engineering Intern</div>
+            <div class="app-org">TechNova · Bengaluru, India</div>
+          </div>
+          <div class="app-meta">
+            <span class="app-date">Applied 12 Sep 2026</span>
+            <span class="status-badge status-review">Under Review</span>
+          </div>
+        </div>
+
+        <div class="app-item">
+          <div class="app-info">
+            <div class="app-title">Frontend Developer</div>
+            <div class="app-org">PixelWorks · Remote</div>
+          </div>
+          <div class="app-meta">
+            <span class="app-date">Applied 05 Sep 2026</span>
+            <span class="status-badge status-shortlisted">Shortlisted</span>
+          </div>
+        </div>
+
+        <div class="app-item">
+          <div class="app-info">
+            <div class="app-title">Data Analyst Intern</div>
+            <div class="app-org">InsightLab · Mumbai, India</div>
+          </div>
+          <div class="app-meta">
+            <span class="app-date">Applied 28 Aug 2026</span>
+            <span class="status-badge status-submitted">Submitted</span>
+          </div>
+        </div>
+
+        <div class="app-item">
+          <div class="app-info">
+            <div class="app-title">UI/UX Design Intern</div>
+            <div class="app-org">Craftly · Delhi, India</div>
+          </div>
+          <div class="app-meta">
+            <span class="app-date">Applied 20 Aug 2026</span>
+            <span class="status-badge status-interview">Interview</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/candidate-dashboard.js"></script>
+</body>
+</html>

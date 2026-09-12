@@ -219,9 +219,9 @@
 
   function redirectToDashboard(role) {
     if (role === 'student') {
-      window.location.href = 'student-dashboard.html';
+      window.location.href = 'candidate/dashboard.html';
     } else if (role === 'admin') {
-      window.location.href = 'admin-dashboard.html';
+      window.location.href = 'admin/dashboard.html';
     } else {
       console.error('[Redirect] Unknown role:', role);
     }
